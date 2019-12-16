@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.dao.IUserDao">
+    <sql id="defaultSql">
+       select * from user
+    </sql>
+    <select id="findByUser" resultType="user" parameterType="user">
+        <include refid="defaultSql"></include>
+        <where>
+            <if test="username!=null">
+                and username like #{username}
+            </if>
+            <if test="address!=null">
+                and address like #{address}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByIds" parameterType="queryvo" resultType="user">
+        <include refid="defaultSql"></include>
+        <where>
+            <if test="ids!=null and ids.size()>0">
+                <foreach collection="ids" open="id in (" close=")" item="uid" separator=",">
+                    #{uid}
+                </foreach>
+            </if>
+        </where>
+    </select>
+</mapper>
